@@ -29,9 +29,11 @@ export const Checkbox = memo(function Checkbox({
         resourceName: resourceName.singular,
       });
 
+  const {checkboxClassName: customCheckboxClassName, checkboxStyle: customCheckboxStyle} = useContext(IndexTableCustomizationContext);
+
   return (
     <CheckboxWrapper>
-      <div className={styles.Wrapper} onClick={onInteraction} onKeyUp={noop}>
+      <div className={classNames(styles.Wrapper, customCheckboxClassName)} style={customCheckboxStyle} onClick={onInteraction} onKeyUp={noop}>
         <PolarisCheckbox
           id={`Select-${itemId}`}
           label={label}
@@ -50,7 +52,7 @@ interface CheckboxWrapperProps {
 
 export function CheckboxWrapper({children}: CheckboxWrapperProps) {
   const {position} = useContext(RowContext);
-  const {checkboxClassName: customCheckboxClassName, checkboxStyle: customCheckboxStyle} = useContext(IndexTableCustomizationContext);
+  const {checkboxClassName: customCheckboxClassName, checkboxStyle: customCheckboxStyle, checkboxWrapperClassName, checkboxWrapperStyle} = useContext(IndexTableCustomizationContext);
   const checkboxNode = useRef<HTMLTableDataCellElement>(null);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,11 +82,11 @@ export function CheckboxWrapper({children}: CheckboxWrapperProps) {
   const checkboxClassName = classNames(
     sharedStyles.TableCell,
     sharedStyles['TableCell-first'],
-    customCheckboxClassName,
+    checkboxWrapperClassName,
   );
 
   return (
-    <td className={checkboxClassName} style={customCheckboxStyle} ref={checkboxNode}>
+    <td className={checkboxClassName} style={checkboxWrapperStyle} ref={checkboxNode}>
       {children}
     </td>
   );

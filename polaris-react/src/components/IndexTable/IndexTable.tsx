@@ -138,6 +138,8 @@ export interface IndexTableBaseProps {
   checkboxClassName?: string;
   /** Custom styles for all checkboxes */
   checkboxStyle?: React.CSSProperties;
+  checkboxWrapperClassName?: string;
+  checkboxWrapperStyle?: React.CSSProperties;
 }
 
 export interface TableHeadingRect {
@@ -171,6 +173,8 @@ function IndexTableBase({
   cellStyle,
   checkboxClassName,
   checkboxStyle,
+  checkboxWrapperClassName,
+  checkboxWrapperStyle,
   ...restProps
 }: IndexTableBaseProps) {
   const {
@@ -742,6 +746,8 @@ function IndexTableBase({
     cellStyle,
     checkboxClassName,
     checkboxStyle,
+    checkboxWrapperClassName,
+    checkboxWrapperStyle,
   };
 
   return (

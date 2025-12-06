@@ -34,6 +34,8 @@ export interface IndexTableCustomizationContextType {
   cellStyle?: React.CSSProperties;
   checkboxClassName?: string;
   checkboxStyle?: React.CSSProperties;
+  checkboxWrapperClassName?: string;
+  checkboxWrapperStyle?: React.CSSProperties;
 }
 
 export const IndexTableCustomizationContext =
