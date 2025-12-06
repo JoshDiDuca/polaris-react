@@ -29,9 +29,13 @@ type Spacing = ResponsiveProp<SpaceScale>;
 export interface BoxProps extends React.AriaAttributes {
   children?: React.ReactNode;
   /** HTML Element type
-   * @default 'div'
-   */
+    * @default 'div'
+    */
   as?: Element;
+  /** Custom class name to apply to the box */
+  className?: string;
+  /** Custom styles to apply to the box */
+  style?: React.CSSProperties;
   /** Background color */
   background?: ColorBackgroundAlias;
   /** Border color */
@@ -200,6 +204,8 @@ export const Box = forwardRef<HTMLElement, BoxProps>(
       insetInlineEnd,
       zIndex,
       opacity,
+      className: customClassName,
+      style: customStyle,
       ...restProps
     },
     ref,
@@ -318,6 +324,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(
         : undefined,
       zIndex,
       opacity,
+      ...customStyle,
     } as React.CSSProperties;
 
     const className = classNames(
@@ -325,6 +332,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(
       visuallyHidden && styles.visuallyHidden,
       printHidden && styles.printHidden,
       as === 'ul' && styles.listReset,
+      customClassName,
     );
 
     return React.createElement(

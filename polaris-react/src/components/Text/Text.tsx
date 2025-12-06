@@ -79,6 +79,10 @@ export interface TextProps {
   visuallyHidden?: boolean;
   /** Add a line-through to the text */
   textDecorationLine?: TextDecorationLine;
+  /** Custom class name to apply to the text element */
+  className?: string;
+  /** Custom styles to apply to the text element */
+  style?: React.CSSProperties;
 }
 
 export const Text = ({
@@ -94,6 +98,8 @@ export const Text = ({
   variant,
   visuallyHidden = false,
   textDecorationLine,
+  className: customClassName,
+  style,
 }: TextProps) => {
   if (
     process.env.NODE_ENV === 'development' &&
@@ -120,10 +126,11 @@ export const Text = ({
     truncate && styles.truncate,
     visuallyHidden && styles.visuallyHidden,
     textDecorationLine && styles[textDecorationLine],
+    customClassName,
   );
 
   return (
-    <Component className={className} {...(id && {id})}>
+    <Component className={className} {...(id && {id})} style={style}>
       {children}
     </Component>
   );

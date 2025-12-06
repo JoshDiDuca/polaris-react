@@ -46,6 +46,10 @@ export interface ButtonProps extends BaseButton {
   tone?: 'critical' | 'success';
   /** Changes the visual appearance of the Button. */
   variant?: 'plain' | 'primary' | 'secondary' | 'tertiary' | 'monochromePlain';
+  /** Custom class name to apply to the button */
+  className?: string;
+  /** Custom styles to apply to the button */
+  style?: React.CSSProperties;
 }
 
 interface CommonButtonProps
@@ -121,12 +125,14 @@ export function Button({
   dataPrimaryLink,
   tone,
   variant = 'secondary',
+  className,
+  style,
 }: ButtonProps) {
   const i18n = useI18n();
   const isDisabled = disabled || loading;
   const {mdUp} = useBreakpoints();
 
-  const className = classNames(
+  const computedClassName = classNames(
     styles.Button,
     styles.pressable,
     styles[variationName('variant', variant)],
@@ -141,6 +147,7 @@ export function Button({
     pressed && !disabled && !url && styles.pressed,
     removeUnderline && styles.removeUnderline,
     tone && styles[variationName('tone', tone)],
+    className,
   );
 
   const disclosureMarkup = disclosure ? (
@@ -206,7 +213,7 @@ export function Button({
 
   const commonProps: CommonButtonProps = {
     id,
-    className,
+    className: computedClassName,
     accessibilityLabel,
     ariaDescribedBy,
     role,
@@ -239,7 +246,7 @@ export function Button({
   };
 
   const buttonMarkup = (
-    <UnstyledButton {...commonProps} {...linkProps} {...actionProps}>
+    <UnstyledButton {...commonProps} {...linkProps} {...actionProps} style={style}>
       {spinnerSVGMarkup}
       {iconMarkup}
       {childMarkup}

@@ -17,20 +17,24 @@ type Spacing = ResponsiveProp<SpaceScale>;
 export interface CardProps {
   children?: React.ReactNode;
   /** Background color
-   * @default 'bg-surface'
-   */
+    * @default 'bg-surface'
+    */
   background?: ColorBackgroundAlias;
   /** The spacing around the card
-   * @default {xs: '400', sm: '500'}
-   * @example
-   * padding='400'
-   * padding={{xs: '200', sm: '300', md: '400', lg: '500', xl: '600'}}
-   */
+    * @default {xs: '400', sm: '500'}
+    * @example
+    * padding='400'
+    * padding={{xs: '200', sm: '300', md: '400', lg: '500', xl: '600'}}
+    */
   padding?: Spacing;
   /** Border radius value above a set breakpoint
-   * @default 'sm'
-   */
+    * @default 'sm'
+    */
   roundedAbove?: BreakpointsAlias;
+  /** Custom class name to apply to the card */
+  className?: string;
+  /** Custom styles to apply to the card */
+  style?: React.CSSProperties;
 }
 
 export const Card = ({
@@ -38,6 +42,8 @@ export const Card = ({
   background = 'bg-surface',
   padding = {xs: '400'},
   roundedAbove = 'sm',
+  className,
+  style,
 }: CardProps) => {
   const breakpoints = useBreakpoints();
   const defaultBorderRadius: BorderRadiusAliasOrScale = '300';
@@ -56,6 +62,8 @@ export const Card = ({
           overflowX="clip"
           overflowY="clip"
           minHeight="100%"
+          className={className}
+          style={style}
         >
           {children}
         </Box>
