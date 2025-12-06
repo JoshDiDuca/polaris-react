@@ -52,7 +52,7 @@ interface CheckboxWrapperProps {
 
 export function CheckboxWrapper({children}: CheckboxWrapperProps) {
   const {position} = useContext(RowContext);
-  const {checkboxClassName: customCheckboxClassName, checkboxStyle: customCheckboxStyle, checkboxWrapperClassName, checkboxWrapperStyle} = useContext(IndexTableCustomizationContext);
+  const {checkboxWrapperClassName, checkboxWrapperStyle} = useContext(IndexTableCustomizationContext);
   const checkboxNode = useRef<HTMLTableDataCellElement>(null);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
