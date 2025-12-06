@@ -1,7 +1,8 @@
-import React, {memo} from 'react';
+import React, {memo, useContext} from 'react';
 import type {ReactNode} from 'react';
 
 import {classNames} from '../../../../utilities/css';
+import {IndexTableCustomizationContext} from '../../../../utilities/index-table';
 import styles from '../../IndexTable.module.css';
 
 export interface CellProps {
@@ -37,15 +38,17 @@ export const Cell = memo(function Cell({
   as = 'td',
   id,
 }: CellProps) {
+  const {cellClassName: tableCellClassName, cellStyle: tableCellStyle} = useContext(IndexTableCustomizationContext);
   const className = classNames(
     customClassName,
+    tableCellClassName,
     styles.TableCell,
     flush && styles['TableCell-flush'],
   );
 
   return React.createElement(
     as,
-    {id, colSpan, headers, scope, className},
+    {id, colSpan, headers, scope, className, style: tableCellStyle},
     children,
   );
 });

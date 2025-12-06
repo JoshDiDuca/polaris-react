@@ -26,3 +26,15 @@ export const scrollDefaultContext = {
 
 export const ScrollContext =
   createContext<ScrollContextType>(scrollDefaultContext);
+
+export interface IndexTableCustomizationContextType {
+  rowClassName?: string;
+  rowStyle?: React.CSSProperties;
+  cellClassName?: string;
+  cellStyle?: React.CSSProperties;
+  checkboxClassName?: string;
+  checkboxStyle?: React.CSSProperties;
+}
+
+export const IndexTableCustomizationContext =
+  createContext<IndexTableCustomizationContextType>({});

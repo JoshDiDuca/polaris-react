@@ -1,4 +1,4 @@
-import React, {useMemo, memo, useRef, useCallback} from 'react';
+import React, {useMemo, memo, useRef, useCallback, useContext} from 'react';
 
 import {useToggle} from '../../../../utilities/use-toggle';
 import {
@@ -9,7 +9,7 @@ import {
 import {Cell} from '../Cell';
 import {Checkbox} from '../Checkbox';
 import {classNames, variationName} from '../../../../utilities/css';
-import {RowContext, RowHoveredContext} from '../../../../utilities/index-table';
+import {RowContext, RowHoveredContext, IndexTableCustomizationContext} from '../../../../utilities/index-table';
 import type {Range} from '../../../../utilities/index-provider/types';
 import styles from '../../IndexTable.module.css';
 
@@ -70,6 +70,7 @@ export const Row = memo(function Row({
     setTrue: setHoverIn,
     setFalse: setHoverOut,
   } = useToggle(false);
+  const {rowClassName: customRowClassName, rowStyle: customRowStyle} = useContext(IndexTableCustomizationContext);
 
   const handleInteraction = useCallback(
     (event: React.MouseEvent | React.KeyboardEvent) => {
@@ -142,6 +143,7 @@ export const Row = memo(function Row({
       !onClick &&
       !primaryLinkElement.current &&
       styles['TableRow-unclickable'],
+    customRowClassName,
   );
 
   let handleRowClick;
@@ -202,6 +204,7 @@ export const Row = memo(function Row({
           key={id}
           id={id}
           className={rowClassName}
+          style={customRowStyle}
           onMouseEnter={setHoverIn}
           onMouseLeave={setHoverOut}
           onClick={handleRowClick}

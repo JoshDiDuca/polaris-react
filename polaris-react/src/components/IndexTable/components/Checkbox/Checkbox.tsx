@@ -4,7 +4,7 @@ import type {ReactNode} from 'react';
 import {debounce} from '../../../../utilities/debounce';
 import {useI18n} from '../../../../utilities/i18n';
 import {classNames} from '../../../../utilities/css';
-import {RowContext} from '../../../../utilities/index-table';
+import {RowContext, IndexTableCustomizationContext} from '../../../../utilities/index-table';
 import {useIndexValue} from '../../../../utilities/index-provider';
 import {Checkbox as PolarisCheckbox} from '../../../Checkbox';
 import {setRootProperty} from '../../../../utilities/set-root-property';
@@ -50,6 +50,7 @@ interface CheckboxWrapperProps {
 
 export function CheckboxWrapper({children}: CheckboxWrapperProps) {
   const {position} = useContext(RowContext);
+  const {checkboxClassName: customCheckboxClassName, checkboxStyle: customCheckboxStyle} = useContext(IndexTableCustomizationContext);
   const checkboxNode = useRef<HTMLTableDataCellElement>(null);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,10 +80,11 @@ export function CheckboxWrapper({children}: CheckboxWrapperProps) {
   const checkboxClassName = classNames(
     sharedStyles.TableCell,
     sharedStyles['TableCell-first'],
+    customCheckboxClassName,
   );
 
   return (
-    <td className={checkboxClassName} ref={checkboxNode}>
+    <td className={checkboxClassName} style={customCheckboxStyle} ref={checkboxNode}>
       {children}
     </td>
   );

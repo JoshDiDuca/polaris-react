@@ -42,6 +42,7 @@ import type {
 
 import {getTableHeadingsBySelector} from './utilities';
 import {ScrollContainer, Cell, Row} from './components';
+import {IndexTableCustomizationContext} from '../../utilities/index-table';
 import styles from './IndexTable.module.css';
 
 interface IndexTableHeadingBase {
@@ -125,6 +126,18 @@ export interface IndexTableBaseProps {
   hasZebraStriping?: boolean;
   /** Properties to enable pagination at the bottom of the table. */
   pagination?: IndexTablePaginationProps;
+  /** Custom class name for all rows */
+  rowClassName?: string;
+  /** Custom styles for all rows */
+  rowStyle?: React.CSSProperties;
+  /** Custom class name for all cells */
+  cellClassName?: string;
+  /** Custom styles for all cells */
+  cellStyle?: React.CSSProperties;
+  /** Custom class name for all checkboxes */
+  checkboxClassName?: string;
+  /** Custom styles for all checkboxes */
+  checkboxStyle?: React.CSSProperties;
 }
 
 export interface TableHeadingRect {
@@ -152,6 +165,12 @@ function IndexTableBase({
   sortToggleLabels,
   hasZebraStriping,
   pagination,
+  rowClassName,
+  rowStyle,
+  cellClassName,
+  cellStyle,
+  checkboxClassName,
+  checkboxStyle,
   ...restProps
 }: IndexTableBaseProps) {
   const {
@@ -716,8 +735,17 @@ function IndexTableBase({
     </div>
   ) : null;
 
+  const customizationContextValue = {
+    rowClassName,
+    rowStyle,
+    cellClassName,
+    cellStyle,
+    checkboxClassName,
+    checkboxStyle,
+  };
+
   return (
-    <>
+    <IndexTableCustomizationContext.Provider value={customizationContextValue}>
       <div className={styles.IndexTable}>
         <div className={styles.IndexTableWrapper}>
           {!condensed && loadingMarkup}
@@ -726,7 +754,7 @@ function IndexTableBase({
           {paginationMarkup}
         </div>
       </div>
-    </>
+    </IndexTableCustomizationContext.Provider>
   );
 
   function renderHeading(
