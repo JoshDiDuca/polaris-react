@@ -1,10 +1,44 @@
 # [Polaris React](https://polaris.shopify.com/)
 
-Polaris React is a component library designed to help developers create the best experience for merchants who use Shopify. Visit the [Polaris style guide](https://polaris.shopify.com) to learn more.
+Polaris React Remix is a component library designed to help developers create the best experience for developers who use Shopify but don't want to stick to their abhorrent design standards.
 
-## Using the React components
+[Polaris style guide](https://polaris.shopify.com)
 
-While we do offer a CSS-only version, **we strongly recommend using the React versions of our components**. It’s the version that we use at Shopify. It allows for rich, complex components like Tabs and Popovers, and will not have as many breaking changes as the CSS-only version.
+## Customization and Styling
+
+### Enhanced Styling Flexibility
+
+I've added `className` and `style` props to key Polaris components to give developers maximum control over styling and customization. 
+This change will allow you to create unique, branded experiences without being constrained by the rigid polaris design system.
+
+**Components Updated:**
+- Button
+- Box
+- Card
+- Text
+- IndexTable (with contextual customization for rows, cells, and checkboxes)
+
+**Usage Example:**
+```jsx
+<Button
+  className="my-custom-button"
+  style={{ backgroundColor: 'rebeccapurple', borderRadius: '8px' }}
+>
+  Custom Styled Button
+</Button>
+```
+
+### A Note To Shopify - A Rant on Design Freedom vs. Standardization
+
+Look, design should be up to whoever is creating it!
+
+Polaris provides solid foundations - but they have been too way restrictive in letting developers arrange things their own way. I've been experimenting with Polaris for about a year now and no matter how much you stick to their standards, there's always going to be one thing you can't change, whether it be a misalignment or a bug.
+
+**Design systems shouldn't be prisons; they should be playgrounds.**
+
+The approach of "you can only style within our predefined variants" was stifling. Real design happens when developers can push boundaries, experiment with spacing, colours, and layouts that fit their specific use cases. Whether you're building for enterprise clients with strict brand guidelines or consumer apps that need personality, you should have the tools to make it happen. When imposing your design standard on other people, you restrict their creative ability.
+
+This isn't about abandoning consistency - it's about enabling it on our terms.
 
 ### Installation
 
@@ -103,30 +137,3 @@ The `/snapit` GitHub comment command in pull requests will publish a snapshot NP
 #### Manual visual regression testing
 
 To start a server for manually viewing the visual regression testing examples, run `yarn run dev`.
-
-## Learning resources
-
-If you’re new to React, we recommend you start with the [official React Getting Started documentation](https://facebook.github.io/react/docs/hello-world.html). As you read through the topics we suggest you follow along using their [React Hello World CodePen example](http://codepen.io/gaearon/pen/ZpvBNJ?editors=0010).
-
-Additional resources:
-
-- Online training courses at [reacttraining.com](http://reacttraining.com), [buildwithreact.com](http://buildwithreact.com), and [reactforbeginners.com](http://reactforbeginners.com).
-- The community resources in [Awesome React](https://github.com/enaqx/awesome-react).
-- As questions and find answers in the various [React support communities](https://facebook.github.io/react/community/support.html).
-
-## Methodology
-
-We set out to make our components easy to use. Each of our components has a well-documented (and fully typed) public interface with strong, consistently-applied conventions. This way, developers don’t need to worry about the underlying implementation. Instead, they can focus on creating amazing merchant experiences.
-
-We ensure that our components are made for everyone. They meet accessibility standards and are responsive to any screen or device. We also put a lot of effort into optimizing the performance of the components, so everyone can build inclusive experiences that work.
-
-We make our components flexible enough to meet diverse needs. They present the information you pass in and give you smart callbacks when something has changed, but they don’t enforce any structure beyond that. No matter what type of experience you’re creating, you can use components as the building blocks of your product or feature.
-
-## Contributing
-
-Pull requests are welcome. See the [contribution guidelines](https://github.com/Shopify/polaris-react/blob/main/.github/CONTRIBUTING.md) for more information.
-
-## Licenses
-
-- Source code is under a [custom license](https://github.com/Shopify/polaris-react/blob/main/LICENSE.md) based on MIT. The license restricts Polaris usage to applications that integrate or interoperate with Shopify software or services, with additional restrictions for external, stand-alone applications.
-- All icons and images are licensed under the [Polaris Design Guidelines License Agreement](https://polaris.shopify.com/legal/license)
