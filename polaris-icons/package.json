@@ -18,7 +18,7 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "clean": "rm -rf .turbo node_modules dist",
+    "clean": "rd /s /q .turbo 2>nul & rd /s /q node_modules 2>nul & rd /s /q dist 2>nul",
     "dev": "rollup -c -w",
     "test": "jest",
     "optimize": "svgo -f icons",

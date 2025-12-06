@@ -1,6 +1,7 @@
 // rollup.config.js
 import * as fs from 'fs';
 import * as path from 'path';
+import {fileURLToPath} from 'url';
 
 import {createFilter} from '@rollup/pluginutils';
 import {babel} from '@rollup/plugin-babel';
@@ -10,8 +11,8 @@ import jsYaml from 'js-yaml';
 import svgr from '@svgr/core';
 
 const convert = svgr.default;
-const iconBasePath = new URL('./icons', import.meta.url).pathname;
-const iconPaths = globby.sync(path.join(iconBasePath, '*.yml'));
+const iconBasePath = fileURLToPath(new URL('./icons', import.meta.url));
+const iconPaths = globby.sync(`${iconBasePath.replace(/\\/g, '/')}/*.yml`);
 
 const iconExports = [];
 const iconTypes = [];
@@ -32,7 +33,7 @@ iconPaths.forEach((filename) => {
   ommitedKeys.forEach((key) => delete iconData[key]);
 
   const exportName = filename
-    .replace(`${iconBasePath}/`, '')
+    .replace(`${iconBasePath.replace(/\\/g, '/')}/`, '')
     .replace('.yml', '');
 
   iconMetadata[exportName] = {

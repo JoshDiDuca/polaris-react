@@ -1,5 +1,5 @@
 {
-  "name": "@shopify/polaris",
+  "name": "polaris-with-class-names",
   "description": "Shopify’s admin product component library",
   "version": "13.10.1",
   "private": false,

@@ -54,8 +54,8 @@ module.exports.styles = function styles({
     )}`;
     rollup.emitFile({
       type: 'asset',
-      fileName: id
-        .replace(`${inputRoot}/`, '')
+      fileName: path
+        .relative(inputRoot, id)
         .replace(/(\.module)?\.css$/, processedExt),
       source: postCssOutput.css,
     });
