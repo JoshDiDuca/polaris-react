@@ -1,19 +1,44 @@
-# Polaris React (⚠️ Deprecated)
+# [Polaris React](https://polaris.shopify.com/)
 
-[![storybook](https://shields.io/badge/storybook-grey?logo=storybook&style=flat)](https://storybook.polaris.shopify.dev) [![npm version](https://img.shields.io/npm/v/@shopify/polaris.svg?label=@shopify/polaris)](https://www.npmjs.com/package/@shopify/polaris) [![CI](https://github.com/shopify/polaris/workflows/CI/badge.svg)](https://github.com/Shopify/polaris/actions?query=branch%3Amain)
+Polaris React Remix is a component library designed to help developers create the best experience for developers who use Shopify but don't want to stick to their abhorrent design standards.
 
-The **Shopify Polaris React library** is deprecated.  
-We are no longer accepting contributions or feature requests in this repository.
+[Polaris style guide](https://polaris.shopify.com)
 
-On October 1, 2025, we released our [Polaris Web Components](https://shopify.dev/docs/api/app-home/polaris-web-components) for Shopify app development. We encourage Shopify App developers to adopt Polaris Web Components for new development.
+## Customization and Styling
 
-This repository will remain available for historical purposes, but it will not receive updates or maintenance.
+### Enhanced Styling Flexibility
 
-## Why Web Components?
+I've added `className` and `style` props to key Polaris components to give developers maximum control over styling and customization. 
+This change will allow you to create unique, branded experiences without being constrained by the rigid polaris design system.
 
-Polaris Web Components provide a more **technology-agnostic foundation**.  
-They work with every framework as well as plain JavaScript and server-rendered sites, enabling more Shopify App developers across more platforms to use Polaris.
+**Components Updated:**
+- Button
+- Box
+- Card
+- Text
+- IndexTable (with contextual customization for rows, cells, and checkboxes)
 
+**Usage Example:**
+```jsx
+<Button
+  className="my-custom-button"
+  style={{ backgroundColor: 'rebeccapurple', borderRadius: '8px' }}
+>
+  Custom Styled Button
+</Button>
+```
+
+### A Note To Shopify - A Rant on Design Freedom vs. Standardization
+
+Look, design should be up to whoever is creating it!
+
+Polaris provides solid foundations - but they have been too way restrictive in letting developers arrange things their own way. I've been experimenting with Polaris for about a year now and no matter how much you stick to their standards, there's always going to be one thing you can't change, whether it be a misalignment or a bug.
+
+**Design systems shouldn't be prisons; they should be playgrounds.**
+
+The approach of "you can only style within our predefined variants" was stifling. Real design happens when developers can push boundaries, experiment with spacing, colours, and layouts that fit their specific use cases. Whether you're building for enterprise clients with strict brand guidelines or consumer apps that need personality, you should have the tools to make it happen. When imposing your design standard on other people, you restrict their creative ability.
+
+This isn't about abandoning consistency - it's about enabling it on our terms.
 
 ## About this repo
 
