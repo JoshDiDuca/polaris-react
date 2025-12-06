@@ -46,6 +46,14 @@ export interface RowProps {
   onNavigation?(id: string): void;
   /** Callback fired when the row is clicked. Overrides the default click behaviour. */
   onClick?(): void;
+  /** @deprecated Use IndexTable expandable props instead */
+  expandable?: boolean;
+  /** @deprecated Use IndexTable expandable props instead */
+  expanded?: boolean;
+  /** @deprecated Use IndexTable expandable props instead */
+  onToggleExpansion?(): void;
+  /** @deprecated Use IndexTable expandable props instead */
+  expandIcon?: React.ReactNode;
 }
 
 export const Row = memo(function Row({
@@ -70,7 +78,7 @@ export const Row = memo(function Row({
     setTrue: setHoverIn,
     setFalse: setHoverOut,
   } = useToggle(false);
-  const {rowClassName: customRowClassName, rowStyle: customRowStyle} = useContext(IndexTableCustomizationContext);
+  const {rowClassName: customRowClassName, rowStyle: customRowStyle, expandable: tableExpandable, expandedRowIds, toggleRowExpansion, isRowExpandable: tableIsRowExpandable, expandIconCollapsed, expandIconExpanded, expandButtonClassName, expandButtonStyle} = useContext(IndexTableCustomizationContext);
 
   const handleInteraction = useCallback(
     (event: React.MouseEvent | React.KeyboardEvent) => {
@@ -197,6 +205,34 @@ export const Row = memo(function Row({
     <Checkbox accessibilityLabel={accessibilityLabel} />
   );
 
+  const isRowExpandable = tableIsRowExpandable ? tableIsRowExpandable(id) : false;
+  const isExpanded = expandedRowIds ? expandedRowIds.has(id) : false;
+
+  const expandButton = (tableExpandable && isRowExpandable) ? (
+    <Cell>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleRowExpansion?.(id);
+        }}
+        className={expandButtonClassName}
+        style={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: '4px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          ...expandButtonStyle
+        }}
+        aria-label={isExpanded ? 'Collapse row' : 'Expand row'}
+      >
+        {isExpanded ? (expandIconExpanded || '▼') : (expandIconCollapsed || '▶')}
+      </button>
+    </Cell>
+  ) : null;
+
   return (
     <RowContext.Provider value={contextValue}>
       <RowHoveredContext.Provider value={hovered}>
@@ -210,6 +246,7 @@ export const Row = memo(function Row({
           onClick={handleRowClick}
           ref={tableRowCallbackRef}
         >
+          {expandButton}
           {tableIsSelectable ? checkboxMarkup : null}
           {children}
         </RowWrapper>

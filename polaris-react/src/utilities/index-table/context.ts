@@ -36,6 +36,16 @@ export interface IndexTableCustomizationContextType {
   checkboxStyle?: React.CSSProperties;
   checkboxWrapperClassName?: string;
   checkboxWrapperStyle?: React.CSSProperties;
+  expandable?: boolean;
+  expandedRowIds?: Set<string>;
+  toggleRowExpansion?: (rowId: string) => void;
+  isRowExpandable?: (rowId: string) => boolean;
+  getRowChildren?: (rowElement: React.ReactElement) => React.ReactNode[];
+  expandIcon?: React.ReactNode;
+  expandIconCollapsed?: React.ReactNode;
+  expandIconExpanded?: React.ReactNode;
+  expandButtonClassName?: string;
+  expandButtonStyle?: React.CSSProperties;
 }
 
 export const IndexTableCustomizationContext =

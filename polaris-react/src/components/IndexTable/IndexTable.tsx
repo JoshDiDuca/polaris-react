@@ -126,6 +126,26 @@ export interface IndexTableBaseProps {
   hasZebraStriping?: boolean;
   /** Properties to enable pagination at the bottom of the table. */
   pagination?: IndexTablePaginationProps;
+  /** Enable expandable rows */
+  expandable?: boolean;
+  /** IDs of expanded rows */
+  expandedRowIds?: string[];
+  /** Default expanded row IDs */
+  defaultExpandedRowIds?: string[];
+  /** Callback when expanded rows change */
+  onExpandedChange?: (expandedRowIds: string[]) => void;
+  /** Callback to get child rows for a row */
+  getRowChildren?: (rowElement: React.ReactElement) => React.ReactNode[];
+  /** Callback to determine if a row is expandable */
+  isRowExpandable?: (rowId: string) => boolean;
+  /** Custom expand icon for collapsed state */
+  expandIconCollapsed?: React.ReactNode;
+  /** Custom expand icon for expanded state */
+  expandIconExpanded?: React.ReactNode;
+  /** Custom class name for expand button */
+  expandButtonClassName?: string;
+  /** Custom styles for expand button */
+  expandButtonStyle?: React.CSSProperties;
   /** Custom class name for all rows */
   rowClassName?: string;
   /** Custom styles for all rows */
@@ -167,6 +187,16 @@ function IndexTableBase({
   sortToggleLabels,
   hasZebraStriping,
   pagination,
+  expandable,
+  expandedRowIds,
+  defaultExpandedRowIds,
+  onExpandedChange,
+  getRowChildren,
+  isRowExpandable,
+  expandIconCollapsed,
+  expandIconExpanded,
+  expandButtonClassName,
+  expandButtonStyle,
   rowClassName,
   rowStyle,
   cellClassName,
@@ -208,6 +238,39 @@ function IndexTableBase({
   const [tableInitialized, setTableInitialized] = useState(false);
   const [stickyWrapper, setStickyWrapper] = useState<HTMLElement | null>(null);
   const [hideScrollContainer, setHideScrollContainer] = useState<boolean>(true);
+
+  // Expansion state
+  const [expandedRows, setExpandedRows] = useState<Set<string>>(() => {
+    if (expandedRowIds) {
+      return new Set(expandedRowIds);
+    }
+    if (defaultExpandedRowIds) {
+      return new Set(defaultExpandedRowIds);
+    }
+    return new Set();
+  });
+
+  // Update expanded state when prop changes
+  useEffect(() => {
+    if (expandedRowIds !== undefined) {
+      setExpandedRows(new Set(expandedRowIds));
+    }
+  }, [expandedRowIds]);
+
+  // Toggle expansion
+  const toggleRowExpansion = useCallback((rowId: string) => {
+    setExpandedRows(prev => {
+      const newExpanded = new Set(prev);
+      if (newExpanded.has(rowId)) {
+        newExpanded.delete(rowId);
+      } else {
+        newExpanded.add(rowId);
+      }
+      onExpandedChange?.(Array.from(newExpanded));
+      return newExpanded;
+    });
+  }, [onExpandedChange]);
+
 
   const tableHeadings = useRef<HTMLElement[]>([]);
   const stickyTableHeadings = useRef<HTMLElement[]>([]);
@@ -694,6 +757,55 @@ function IndexTableBase({
     </>
   );
 
+  // Process children to insert child rows for expanded rows
+  const processedChildren = useMemo(() => {
+    if (!expandable || !getRowChildren) {
+      return children;
+    }
+
+    const result: React.ReactNode[] = [];
+    let position = 0;
+
+    React.Children.forEach(children, (child) => {
+      if (React.isValidElement(child) && child.type === Row) {
+        const rowId = child.props.id;
+        const isExpanded = expandedRows.has(rowId);
+
+        // Clone the row with updated position
+        const updatedRow = React.cloneElement(child, {
+          ...child.props,
+          position
+        });
+        result.push(updatedRow);
+        position++;
+
+        // Add child rows if expanded
+        if (isExpanded) {
+          const childRows = getRowChildren(updatedRow);
+          if (childRows && childRows.length > 0) {
+            childRows.forEach((childRow, index) => {
+              if (React.isValidElement(childRow)) {
+                result.push(
+                  React.cloneElement(childRow, {
+                    ...childRow.props,
+                    key: `${rowId}-child-${index}`,
+                    position,
+                    rowType: 'child'
+                  })
+                );
+                position++;
+              }
+            });
+          }
+        }
+      } else {
+        result.push(child);
+      }
+    });
+
+    return result;
+  }, [children, expandable, expandedRows, getRowChildren]);
+
   const condensedClassNames = classNames(
     styles.CondensedList,
     hasZebraStriping && styles.ZebraStriping,
@@ -707,7 +819,7 @@ function IndexTableBase({
         className={condensedClassNames}
         ref={condensedListElement}
       >
-        {children}
+        {processedChildren}
       </ul>
     </>
   ) : (
@@ -721,7 +833,7 @@ function IndexTableBase({
           <thead>
             <tr className={styles.HeadingRow}>{headingsMarkup}</tr>
           </thead>
-          <tbody ref={tableBodyRef}>{children}</tbody>
+          <tbody ref={tableBodyRef}>{processedChildren}</tbody>
         </table>
       </ScrollContainer>
     </>
@@ -733,12 +845,6 @@ function IndexTableBase({
       <div className={styles.EmptySearchResultWrapper}>{emptyStateMarkup}</div>
     );
 
-  const paginationMarkup = pagination ? (
-    <div className={styles.PaginationWrapper}>
-      <Pagination type="table" {...pagination} />
-    </div>
-  ) : null;
-
   const customizationContextValue = {
     rowClassName,
     rowStyle,
@@ -748,7 +854,22 @@ function IndexTableBase({
     checkboxStyle,
     checkboxWrapperClassName,
     checkboxWrapperStyle,
+    expandable,
+    expandedRowIds: expandedRows,
+    toggleRowExpansion,
+    isRowExpandable,
+    getRowChildren,
+    expandIconCollapsed,
+    expandIconExpanded,
+    expandButtonClassName,
+    expandButtonStyle,
   };
+
+  const paginationMarkup = pagination ? (
+    <div className={styles.PaginationWrapper}>
+      <Pagination type="table" {...pagination} />
+    </div>
+  ) : null;
 
   return (
     <IndexTableCustomizationContext.Provider value={customizationContextValue}>
