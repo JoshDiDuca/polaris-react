@@ -15,7 +15,7 @@ import {getDefaultAccessibilityLabel} from './utils';
 const DEFAULT_SIZE: Size = 'medium';
 interface NonMutuallyExclusiveProps {
   /** The content to display inside the badge. */
-  children?: string;
+  children?: React.ReactNode | string;
   /** Colors and labels the badge with the given tone. */
   tone?: Tone;
   /** Render a pip showing the progress of a given task. */
@@ -107,7 +107,7 @@ export function Badge({
           <Icon source={icon} />
         </span>
       )}
-      {children && (
+      {typeof children === 'string' ? (
         <Text
           as="span"
           variant="bodySm"
@@ -115,6 +115,8 @@ export function Badge({
         >
           {children}
         </Text>
+      ) : (
+        children
       )}
     </span>
   );
