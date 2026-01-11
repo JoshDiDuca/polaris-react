@@ -1,7 +1,7 @@
 import React from 'react';
-import type {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 
-import {classNames} from '../../utilities/css';
+import { classNames } from '../../utilities/css';
 
 import styles from './Text.module.css';
 
@@ -51,14 +51,14 @@ type Tone =
 
 type TextDecorationLine = 'line-through';
 
-const deprecatedVariants: {[V in Variant]?: Variant} = {
+const deprecatedVariants: { [V in Variant]?: Variant } = {
   heading3xl: 'heading2xl',
 };
 export interface TextProps {
   /** Adjust horizontal alignment of text */
   alignment?: Alignment;
   /** The element type */
-  as: Element;
+  as?: Element;
   /** Prevent text from overflowing */
   breakWord?: boolean;
   /** Text to display */
@@ -130,7 +130,7 @@ export const Text = ({
   );
 
   return (
-    <Component className={className} {...(id && {id})} style={style}>
+    <Component className={className} {...(id && { id })} style={style}>
       {children}
     </Component>
   );
