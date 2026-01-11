@@ -1,7 +1,7 @@
 {
   "name": "polaris-react-extended",
   "description": "Shopify’s admin product component library",
-  "version": "13.10.6",
+  "version": "13.10.7",
   "private": false,
   "license": "SEE LICENSE IN LICENSE.md",
   "author": "Shopify <dev@shopify.com>",
