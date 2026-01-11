@@ -73,6 +73,8 @@ interface ChoiceProps extends ChoiceBleedProps {
   helpText?: React.ReactNode;
   /** Indicates the tone of the choice */
   tone?: 'magic';
+  /** Indicates the color of the choice */
+  color?: 'magic';
 }
 
 export function Choice({
@@ -92,12 +94,14 @@ export function Choice({
   bleedInlineStart,
   bleedInlineEnd,
   tone,
+  color,
 }: ChoiceProps) {
+  const effectiveTone = tone || color;
   const className = classNames(
     styles.Choice,
     labelHidden && styles.labelHidden,
     disabled && styles.disabled,
-    tone && styles[variationName('tone', tone)],
+    effectiveTone && styles[variationName('tone', effectiveTone)],
     labelClassName,
   );
 

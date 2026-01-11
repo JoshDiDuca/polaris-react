@@ -44,6 +44,8 @@ export interface ButtonProps extends BaseButton {
   dataPrimaryLink?: boolean;
   /** Sets the color treatment of the Button. */
   tone?: 'critical' | 'success';
+  /** Sets the color treatment of the Button. */
+  color?: 'critical' | 'success';
   /** Changes the visual appearance of the Button. */
   variant?: 'plain' | 'primary' | 'secondary' | 'tertiary' | 'monochromePlain';
   /** Custom class name to apply to the button */
@@ -124,6 +126,7 @@ export function Button({
   fullWidth,
   dataPrimaryLink,
   tone,
+  color,
   variant = 'secondary',
   className,
   style,
@@ -131,6 +134,7 @@ export function Button({
   const i18n = useI18n();
   const isDisabled = disabled || loading;
   const {mdUp} = useBreakpoints();
+  const effectiveTone = tone || color;
 
   const computedClassName = classNames(
     styles.Button,
@@ -146,7 +150,7 @@ export function Button({
     loading && styles.loading,
     pressed && !disabled && !url && styles.pressed,
     removeUnderline && styles.removeUnderline,
-    tone && styles[variationName('tone', tone)],
+    effectiveTone && styles[variationName('tone', effectiveTone)],
     className,
   );
 

@@ -64,6 +64,8 @@ export interface BoxProps extends React.AriaAttributes {
   borderInlineEndWidth?: BorderWidthScale;
   /** Color of children */
   color?: ColorTextAlias;
+  /** Color of children */
+  tone?: ColorTextAlias;
   /** HTML id attribute */
   id?: string;
   /** Minimum height of container */
@@ -175,6 +177,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(
       borderStartEndRadius,
       children,
       color,
+      tone,
       id,
       minHeight,
       minWidth,
@@ -229,8 +232,9 @@ export const Box = forwardRef<HTMLElement, BoxProps>(
       ? 'solid'
       : undefined;
 
+    const effectiveColor = color || tone;
     const style = {
-      '--pc-box-color': color ? `var(--p-color-${color})` : undefined,
+      '--pc-box-color': effectiveColor ? `var(--p-color-${effectiveColor})` : undefined,
       '--pc-box-background': background
         ? `var(--p-color-${background})`
         : undefined,

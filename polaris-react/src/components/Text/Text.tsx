@@ -65,6 +65,8 @@ export interface TextProps {
   children: ReactNode;
   /** Adjust tone of text */
   tone?: Tone;
+  /** Adjust color of text */
+  color?: Tone;
   /** Adjust weight of text */
   fontWeight?: FontWeight;
   /** HTML id attribute */
@@ -91,6 +93,7 @@ export const Text = ({
   breakWord,
   children,
   tone,
+  color,
   fontWeight,
   id,
   numeric = false,
@@ -113,6 +116,7 @@ export const Text = ({
   }
 
   const Component = as || (visuallyHidden ? 'span' : 'p');
+  const effectiveTone = tone || color;
 
   const className = classNames(
     styles.root,
@@ -121,7 +125,7 @@ export const Text = ({
     (alignment || truncate) && styles.block,
     alignment && styles[alignment],
     breakWord && styles.break,
-    tone && styles[tone],
+    effectiveTone && styles[effectiveTone],
     numeric && styles.numeric,
     truncate && styles.truncate,
     visuallyHidden && styles.visuallyHidden,

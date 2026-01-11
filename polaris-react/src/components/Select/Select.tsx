@@ -78,6 +78,8 @@ export interface SelectProps {
   requiredIndicator?: boolean;
   /** Indicates the tone of the select */
   tone?: 'magic';
+  /** Indicates the color of the select */
+  color?: 'magic';
 }
 
 const PLACEHOLDER_VALUE = '';
@@ -100,17 +102,19 @@ export function Select({
   onBlur,
   requiredIndicator,
   tone,
+  color,
 }: SelectProps) {
   const {value: focused, toggle: toggleFocused} = useToggle(false);
 
   const uniqId = useId();
   const id = idProp ?? uniqId;
   const labelHidden = labelInline ? true : labelHiddenProp;
+  const effectiveTone = tone || color;
 
   const className = classNames(
     styles.Select,
     error && styles.error,
-    tone && styles[variationName('tone', tone)],
+    effectiveTone && styles[variationName('tone', effectiveTone)],
     disabled && styles.disabled,
   );
 
@@ -163,7 +167,7 @@ export function Select({
         as="span"
         variant="bodyMd"
         tone={
-          tone && tone === 'magic' && !focused ? 'magic-subdued' : 'subdued'
+          effectiveTone && effectiveTone === 'magic' && !focused ? 'magic-subdued' : 'subdued'
         }
         truncate
       >

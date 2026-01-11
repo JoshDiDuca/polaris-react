@@ -36,6 +36,8 @@ export interface RadioButtonProps extends ChoiceBleedProps {
   helpText?: React.ReactNode;
   /** Indicates the tone of the text field */
   tone?: 'magic';
+  /** Indicates the color of the radio button */
+  color?: 'magic';
 }
 
 export function RadioButton({
@@ -58,11 +60,13 @@ export function RadioButton({
   bleedInlineStart,
   bleedInlineEnd,
   tone,
+  color,
 }: RadioButtonProps) {
   const uniqId = useId();
   const id = idProp ?? uniqId;
   const name = nameProp || id;
   const inputNode = useRef<HTMLInputElement>(null);
+  const effectiveTone = tone || color;
 
   const handleBlur = () => {
     onBlur && onBlur();
@@ -85,7 +89,7 @@ export function RadioButton({
 
   const inputClassName = classNames(
     styles.Input,
-    tone && styles[variationName('tone', tone)],
+    effectiveTone && styles[variationName('tone', effectiveTone)],
   );
 
   const extraChoiceProps = {
@@ -106,7 +110,7 @@ export function RadioButton({
       labelClassName={styles.ChoiceLabel}
       fill={fill}
       {...extraChoiceProps}
-      {...(checked ? {tone} : {})}
+      {...(checked ? {tone: effectiveTone} : {})}
     >
       <span className={styles.RadioButton}>
         <input

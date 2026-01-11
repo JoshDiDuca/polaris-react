@@ -53,6 +53,8 @@ export interface CheckboxProps extends ChoiceBleedProps {
   error?: Error | boolean;
   /** Indicates the tone of the checkbox */
   tone?: 'magic';
+  /** Indicates the color of the checkbox */
+  color?: 'magic';
 }
 
 export const Checkbox = forwardRef<CheckboxHandles, CheckboxProps>(
@@ -80,9 +82,11 @@ export const Checkbox = forwardRef<CheckboxHandles, CheckboxProps>(
       bleedInlineStart,
       bleedInlineEnd,
       tone,
+      color,
     }: CheckboxProps,
     ref,
   ) {
+    const effectiveTone = tone || color;
     const inputNode = useRef<HTMLInputElement>(null);
     const uniqId = useId();
     const id = idProp ?? uniqId;
@@ -156,7 +160,7 @@ export const Checkbox = forwardRef<CheckboxHandles, CheckboxProps>(
     const inputClassName = classNames(
       styles.Input,
       isIndeterminate && styles['Input-indeterminate'],
-      tone && styles[variationName('tone', tone)],
+      effectiveTone && styles[variationName('tone', effectiveTone)],
     );
 
     const extraChoiceProps = {
@@ -177,7 +181,7 @@ export const Checkbox = forwardRef<CheckboxHandles, CheckboxProps>(
         disabled={disabled}
         labelClassName={classNames(styles.ChoiceLabel, labelClassName)}
         fill={fill}
-        tone={tone}
+        tone={effectiveTone}
         {...extraChoiceProps}
       >
         <span className={wrapperClassName}>

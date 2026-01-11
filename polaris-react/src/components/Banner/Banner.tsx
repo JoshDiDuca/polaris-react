@@ -43,6 +43,8 @@ export interface BannerProps {
   hideIcon?: boolean;
   /** Sets the status of the banner. */
   tone?: BannerTone;
+  /** Sets the status of the banner. */
+  color?: BannerTone;
   /** The child elements to render in the banner. */
   children?: React.ReactNode;
   /** Action for banner */
@@ -59,7 +61,8 @@ export const Banner = forwardRef<BannerHandles, BannerProps>(function Banner(
   props: BannerProps,
   bannerRef,
 ) {
-  const {tone, stopAnnouncements} = props;
+  const {tone, color, stopAnnouncements} = props;
+  const effectiveTone = tone || color;
   const withinContentContainer = useContext(WithinContentContext);
   const {wrapperRef, handleKeyUp, handleBlur, handleMouseUp, shouldShowFocus} =
     useBannerFocus(bannerRef);
@@ -76,13 +79,13 @@ export const Banner = forwardRef<BannerHandles, BannerProps>(function Banner(
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={0}
         ref={wrapperRef}
-        role={tone === 'warning' || tone === 'critical' ? 'alert' : 'status'}
+        role={effectiveTone === 'warning' || effectiveTone === 'critical' ? 'alert' : 'status'}
         aria-live={stopAnnouncements ? 'off' : 'polite'}
         onMouseUp={handleMouseUp}
         onKeyUp={handleKeyUp}
         onBlur={handleBlur}
       >
-        <BannerLayout {...props} />
+        <BannerLayout {...props} tone={effectiveTone} />
       </div>
     </BannerContext.Provider>
   );
@@ -98,7 +101,8 @@ interface BannerLayoutProps {
 }
 
 export function BannerLayout({
-  tone = 'info',
+  tone,
+  color,
   icon,
   hideIcon,
   onDismiss,
@@ -110,8 +114,9 @@ export function BannerLayout({
   const i18n = useI18n();
   const withinContentContainer = useContext(WithinContentContext);
   const isInlineIconBanner = !title && !withinContentContainer;
-  const bannerTone = Object.keys(bannerAttributes).includes(tone)
-    ? tone
+  const effectiveTone = tone || color || 'info';
+  const bannerTone = Object.keys(bannerAttributes).includes(effectiveTone)
+    ? effectiveTone
     : 'info';
   const bannerColors =
     bannerAttributes[bannerTone][

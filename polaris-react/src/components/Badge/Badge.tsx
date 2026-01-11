@@ -18,9 +18,11 @@ interface NonMutuallyExclusiveProps {
   children?: React.ReactNode | string;
   /** Colors and labels the badge with the given tone. */
   tone?: Tone;
+  /** Colors and labels the badge with the given color. */
+  color?: Tone;
   /** Render a pip showing the progress of a given task. */
   progress?: Progress;
-  /** Icon to display to the left of the badge’s content. */
+  /** Icon to display to the left of the badge's content. */
   icon?: IconSource;
   /**
    * @default 'medium'
@@ -63,6 +65,7 @@ const progressIconMap: {[P in Progress]: IconSource} = {
 export function Badge({
   children,
   tone,
+  color,
   progress,
   icon,
   size = DEFAULT_SIZE,
@@ -70,17 +73,18 @@ export function Badge({
 }: BadgeProps) {
   const i18n = useI18n();
   const withinFilter = useContext(WithinFilterContext);
+  const effectiveTone = tone || color;
 
   const className = classNames(
     styles.Badge,
-    tone && styles[variationName('tone', tone)],
+    effectiveTone && styles[variationName('tone', effectiveTone)],
     size && size !== DEFAULT_SIZE && styles[variationName('size', size)],
     withinFilter && styles.withinFilter,
   );
 
   const accessibilityLabel = toneAndProgressLabelOverride
     ? toneAndProgressLabelOverride
-    : getDefaultAccessibilityLabel(i18n, progress, tone);
+    : getDefaultAccessibilityLabel(i18n, progress, effectiveTone);
 
   let accessibilityMarkup = Boolean(accessibilityLabel) && (
     <Text as="span" visuallyHidden>
@@ -111,7 +115,7 @@ export function Badge({
         <Text
           as="span"
           variant="bodySm"
-          fontWeight={tone === 'new' ? 'medium' : undefined}
+          fontWeight={effectiveTone === 'new' ? 'medium' : undefined}
         >
           {children}
         </Text>

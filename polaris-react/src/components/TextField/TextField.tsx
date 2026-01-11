@@ -183,6 +183,8 @@ interface NonMutuallyExclusiveProps {
   onBlur?(event?: React.FocusEvent): void;
   /** Indicates the tone of the text field */
   tone?: 'magic';
+  /** Indicates the color of the text field */
+  color?: 'magic';
   /** Whether the TextField will grow as the text within the input changes */
   autoSize?: boolean;
   /** Indicates the loading state */
@@ -255,6 +257,7 @@ export function TextField({
   onFocus,
   onBlur,
   tone,
+  color,
   autoSize,
   loading,
 }: TextFieldProps) {
@@ -264,6 +267,7 @@ export function TextField({
   const isAfterInitial = useIsAfterInitialMount();
   const uniqId = useId();
   const id = idProp ?? uniqId;
+  const effectiveTone = tone || color;
 
   const textFieldRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -312,7 +316,7 @@ export function TextField({
     disabled && styles.disabled,
     readOnly && styles.readOnly,
     error && styles.error,
-    tone && styles[variationName('tone', tone)],
+    effectiveTone && styles[variationName('tone', effectiveTone)],
     multiline && styles.multiline,
     focus && !disabled && styles.focus,
     variant !== 'inherit' && styles[variant],

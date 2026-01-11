@@ -30,6 +30,8 @@ export interface RowProps {
   position: number;
   /** Whether the row should visually indicate its status with a background color */
   tone?: RowStatus;
+  /** Whether the row should visually indicate its status with a background color */
+  color?: RowStatus;
   /** Whether the row should be disabled */
   disabled?: boolean;
   /** A tuple array with the first and last index of the range of other rows that this row describes. All rows in the range are selected when the selection range row is selected. */
@@ -63,6 +65,7 @@ export const Row = memo(function Row({
   id,
   position,
   tone,
+  color,
   disabled,
   selectionRange,
   rowType = 'data',
@@ -70,6 +73,7 @@ export const Row = memo(function Row({
   onNavigation,
   onClick,
 }: RowProps) {
+  const effectiveTone = tone || color;
   const {selectable: tableIsSelectable, selectMode, condensed} = useIndexRow();
   const rowIsSelectable = tableIsSelectable && !hideSelectable;
   const onSelectionChange = useIndexSelectionChange();
@@ -146,7 +150,7 @@ export const Row = memo(function Row({
     selected && styles['TableRow-selected'],
     hovered && !condensed && styles['TableRow-hovered'],
     disabled && styles['TableRow-disabled'],
-    tone && styles[variationName('tone', tone)],
+    effectiveTone && styles[variationName('tone', effectiveTone)],
     !rowIsSelectable &&
       !onClick &&
       !primaryLinkElement.current &&

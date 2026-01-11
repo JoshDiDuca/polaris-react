@@ -49,6 +49,8 @@ export interface ChoiceListProps {
   onChange?(selected: string[], name: string): void;
   /** Indicates the tone of the choice list */
   tone?: 'magic';
+  /** Indicates the color of the choice list */
+  color?: 'magic';
 }
 
 export function ChoiceList({
@@ -62,7 +64,9 @@ export function ChoiceList({
   disabled = false,
   name: nameProp,
   tone,
+  color,
 }: ChoiceListProps) {
+  const effectiveTone = tone || color;
   // Type asserting to any is required for TS3.2 but can be removed when we update to 3.3
   // see https://github.com/Microsoft/TypeScript/issues/28768
   const ControlComponent: any = allowMultiple ? Checkbox : RadioButton;
@@ -121,7 +125,7 @@ export function ChoiceList({
             ariaDescribedBy={
               error && describedByError ? errorTextID(finalName) : null
             }
-            tone={tone}
+            tone={effectiveTone}
           />
           {children}
         </Bleed>

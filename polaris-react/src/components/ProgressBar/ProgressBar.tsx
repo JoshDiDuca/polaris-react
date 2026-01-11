@@ -35,23 +35,30 @@ export interface ProgressBarProps {
    * @default 'highlight'
    */
   tone?: Tone;
+  /**
+   * Color of progressbar
+   * @default 'highlight'
+   */
+  color?: Tone;
 }
 
 export function ProgressBar({
   progress = 0,
   size = 'medium',
   tone = 'highlight',
+  color,
   animated: hasAppearAnimation = true,
   ariaLabelledBy,
 }: ProgressBarProps) {
   const theme = useTheme();
   const i18n = useI18n();
   const indicatorRef = useRef<HTMLDivElement>(null);
+  const effectiveTone = tone || color || 'highlight';
 
   const className = classNames(
     styles.ProgressBar,
     size && styles[variationName('size', size)],
-    tone && styles[variationName('tone', tone)],
+    effectiveTone && styles[variationName('tone', effectiveTone)],
   );
 
   const warningMessage = i18n.translate(

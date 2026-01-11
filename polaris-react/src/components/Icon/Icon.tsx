@@ -33,11 +33,13 @@ export interface IconProps {
   source: IconSource;
   /** Set the color for the SVG fill */
   tone?: Tone;
+  /** Set the color for the SVG fill */
+  color?: Tone;
   /** Descriptive text to be read to screenreaders */
   accessibilityLabel?: string;
 }
 
-export function Icon({source, tone, accessibilityLabel}: IconProps) {
+export function Icon({source, tone, color, accessibilityLabel}: IconProps) {
   let sourceType: 'function' | 'placeholder' | 'external';
   if (typeof source === 'function') {
     sourceType = 'function';
@@ -47,8 +49,10 @@ export function Icon({source, tone, accessibilityLabel}: IconProps) {
     sourceType = 'external';
   }
 
+  const effectiveTone = tone || color;
+
   if (
-    tone &&
+    effectiveTone &&
     sourceType === 'external' &&
     process.env.NODE_ENV === 'development'
   ) {
@@ -60,7 +64,7 @@ export function Icon({source, tone, accessibilityLabel}: IconProps) {
 
   const className = classNames(
     styles.Icon,
-    tone && styles[variationName('tone', tone)],
+    effectiveTone && styles[variationName('tone', effectiveTone)],
   );
 
   const {mdDown} = useBreakpoints();
