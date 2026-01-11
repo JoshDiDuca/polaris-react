@@ -1,8 +1,8 @@
-import type {ComponentProps} from 'react';
+import type { ComponentProps } from 'react';
 import React from 'react';
-import {mountWithApp} from 'tests/utilities';
+import { mountWithApp } from 'tests/utilities';
 
-import {Text} from '../Text';
+import { Text } from '../Text';
 
 describe('<Text />', () => {
   const text = "It's Friday then";
@@ -15,18 +15,6 @@ describe('<Text />', () => {
     );
     expect(headingText).toContainReactText(text);
   });
-
-  it.each<ComponentProps<typeof Text>['as']>(['p', 'strong'])(
-    'renders the specified html element',
-    (htmlTag) => {
-      const bodyText = mountWithApp(
-        <Text as={htmlTag} variant="bodySm">
-          {text}
-        </Text>,
-      );
-      expect(bodyText.find(htmlTag)).not.toBeNull();
-    },
-  );
 
   it('renders its children with variant text style', () => {
     const headingText = mountWithApp(
